@@ -49,9 +49,9 @@ class Tile {
     this.cols = cols;
     this.rows = rows;
 
-    // if (random(1) < 0.2) {
-    //   this.wall = true;
-    // }
+    if (random(1) < 0.3) {
+      this.wall = true;
+    }
 
     this.addNeighbors = function (grid) {
       let i = this.x;
@@ -112,6 +112,7 @@ class Grid {
   }
 
   initializeCanvas() {
+    const app = document.getElementById("canvas-container");
     const canvas = document.querySelector("canvas");
     if (canvas) {
       console.log("canvas exists");
@@ -125,7 +126,7 @@ class Grid {
     }
     this.canvas.width = this.width * 10;
     this.canvas.height = this.height * 10;
-    document.body.appendChild(this.canvas);
+    app.appendChild(this.canvas);
     this.w = this.canvas.width / this.width;
     this.h = this.canvas.height / this.height;
   }
@@ -151,8 +152,10 @@ class Grid {
   showTile(x, y, color) {
     const tile = this.getTile(x, y);
     const ctx = this.canvas.getContext("2d");
+
     ctx.fillStyle = color;
-    ctx.fillRect(tile.x * 10, tile.y * 10, 10, 10);
+    ctx.beginPath();
+    ctx.fillRect(tile.x * this.w, tile.y * this.h, this.w, this.h);
   }
 
   draw() {
@@ -173,7 +176,7 @@ class PathFinder {
     this.start = this.grid.getTile(0, 0);
     this.end = this.grid.getTile(
       Math.floor(this.grid.width - 1),
-      Math.floor(random(this.grid.height - 1))
+      Math.floor(this.grid.height - 1)
     );
     this.path = [];
     this.search = this.search.bind(this);
@@ -221,17 +224,16 @@ class PathFinder {
           this.path.push(temp.previous);
           temp = temp.previous;
         }
-        console.log(this.path.length);
         console.log("DONE!");
         return true;
       }
-      this.path = [];
-      let temp = current;
-      this.path.push(temp);
-      while (temp.previous) {
-        this.path.push(temp.previous);
-        temp = temp.previous;
-      }
+      // this.path = [];
+      // let temp = current;
+      // this.path.push(temp);
+      // while (temp.previous) {
+      //   this.path.push(temp.previous);
+      //   temp = temp.previous;
+      // }
 
       removeFromArray(this.openSet, current);
       this.closedSet.push(current);
@@ -275,6 +277,7 @@ class PathFinder {
       for (let j = 0; j < this.grid.height; j++) {
         if (this.grid.getTile(i, j).wall) {
           this.grid.showTile(i, j, color(255, 255, 200));
+          const ctx = this.grid.canvas.getContext("2d");
         }
       }
     }
@@ -283,23 +286,17 @@ class PathFinder {
   draw() {
     for (let i = 0; i < this.grid.cols; i++) {
       for (let j = 0; j < this.grid.rows; j++) {
-        this.grid.showTile(j, i, color(0, 0, 0));
-        if (this.grid.getTile(i, j).wall) {
-          this.grid.showTile(j, i, color(255, 255, 255));
-        }
+        this.grid.showTile(j, i, "#202124");
+
         if (this.grid.getTile(i, j) === this.end) {
-          this.grid.showTile(j, i, color(255, 0, 0));
+          this.grid.showTile(j, i, "#ff0000");
         }
       }
     }
 
     for (let i = 0; i < this.closedSet.length; i++) {
       if (this.closedSet[i].wall) {
-        this.grid.showTile(
-          this.closedSet[i].x,
-          this.closedSet[i].y,
-          color(0, 0, 200)
-        );
+        this.grid.showTile(this.closedSet[i].x, this.closedSet[i].y, "#00bcd4");
       } else {
         if (this.closedSet[i].wall) {
           this.grid.showTile(
@@ -311,7 +308,7 @@ class PathFinder {
           this.grid.showTile(
             this.closedSet[i].x,
             this.closedSet[i].y,
-            color(255, 0, 0)
+            "#ff0000"
           );
         }
       }
@@ -321,12 +318,12 @@ class PathFinder {
       this.grid.showTile(
         this.openSet[i].x,
         this.openSet[i].y,
-        color(0, 255, 0)
+        color(255, 255, 255)
       );
     }
 
     this.path.forEach((tile) => {
-      this.grid.showTile(tile.x, tile.y, color(0, 0, 255));
+      this.grid.showTile(tile.x, tile.y, "#00bcd4");
     });
   }
 }
@@ -353,10 +350,9 @@ function main() {
       return;
     }
     pathFinder.draw();
-    setTimeout(loop, 1);
+    setTimeout(loop, 10);
   }
-  const grid = new Grid(25, 25);
-  console.log(grid);
+  const grid = new Grid(50, 50);
   const pathFinder = new PathFinder(
     grid,
     distance.options[distance.selectedIndex].value

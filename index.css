@@ -1,0 +1,76 @@
+:root {
+  --color-primary: #00bcd4;
+  --color-secondary: #ff0000;
+  --canvas-background: #202124;
+  --app-background: #fff;
+  --font-color: #202124;
+  --color-line: black;
+  --width: 500px;
+  --height: 500px;
+}
+
+body {
+  margin: 0;
+  font-family: "Work Sans";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.App {
+  text-align: center;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1rem;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 100vh;
+  background-color: var(--app-background);
+  gap: 1rem;
+  max-height: 100vh;
+  overflow: hidden;
+}
+
+.App-header {
+  display: flex;
+  flex-direction: row;
+  width: var(--width);
+  position: relative;
+  justify-content: center;
+}
+
+.App-header h2 {
+  margin-right: auto;
+}
+
+.App-header > * {
+  margin: 0;
+}
+
+.icon {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  display: flex;
+}
+
+.icon img {
+  width: 25px;
+  height: 25px;
+}
+
+main {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  align-items: center;
+}
+
+#canvas-container {
+  background-color: var(--canvas-background);
+  border: 1px solid var(--color-line);
+  width: var(--width);
+  height: var(--height);
+}
