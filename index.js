@@ -322,9 +322,11 @@ class PathFinder {
       );
     }
 
-    this.path.forEach((tile) => {
-      this.grid.showTile(tile.x, tile.y, "#00bcd4");
-    });
+    for (let i = 0; i < this.path.length; i++) {
+      setTimeout(() => {
+        this.grid.showTile(this.path[i].x, this.path[i].y, "#00bcd4");
+      }, 10);
+    }
   }
 }
 
