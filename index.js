@@ -49,7 +49,7 @@ class Tile {
     this.cols = cols;
     this.rows = rows;
 
-    if (random(1) < 0.3) {
+    if (random(1) < 0.5) {
       this.wall = true;
     }
 
@@ -227,13 +227,14 @@ class PathFinder {
         console.log("DONE!");
         return true;
       }
-      // this.path = [];
-      // let temp = current;
-      // this.path.push(temp);
-      // while (temp.previous) {
-      //   this.path.push(temp.previous);
-      //   temp = temp.previous;
-      // }
+
+      this.path = [];
+      let temp = current;
+      this.path.push(temp);
+      while (temp.previous) {
+        this.path.push(temp.previous);
+        temp = temp.previous;
+      }
 
       removeFromArray(this.openSet, current);
       this.closedSet.push(current);
@@ -323,9 +324,7 @@ class PathFinder {
     }
 
     for (let i = 0; i < this.path.length; i++) {
-      setTimeout(() => {
-        this.grid.showTile(this.path[i].x, this.path[i].y, "#00bcd4");
-      }, 10);
+      this.grid.showTile(this.path[i].x, this.path[i].y, "#00bcd4");
     }
   }
 }
